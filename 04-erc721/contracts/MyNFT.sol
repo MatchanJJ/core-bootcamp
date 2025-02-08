@@ -9,14 +9,14 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract MyNFT is ERC721URIStorage {
     uint256 tokenId;
 
-    constructor() ERC721("MyERC721Token", "MET") {}
+    constructor() ERC721("Shack", "SCKNFT") {}
 
     function mint() external {
-        // _safeMint(msg.sender, tokenId);
-        // _setTokenURI(
-        //     tokenId,
-        //     "https://path/to/metadata-uri"
-        // );
-        // tokenId++;
+        _safeMint(msg.sender, tokenId);
+        _setTokenURI(
+            tokenId,
+            "https://gist.githubusercontent.com/MatchanJJ/2d4b2e21b59c647727dfc9bbc1773caa/raw/7e2760227e043d15ebf0a118a7a5440c6a7049a8/metadata.json"
+        );
+        tokenId++;
     }
 }
