@@ -25,8 +25,9 @@ describe("SolidityFunctions", function () {
   describe("Deployment", function () {
     it("should call constructor", async function () {
       const { ctcSolidityFunctions } = await loadFixture(deploy);
-
       expect(ctcSolidityFunctions).not.to.be.undefined;
+      const balance = await ctcSolidityFunctions.getBalance();
+      console.log("initial balance is ", balance);
     });
 
     it("should add balance", async function () {
