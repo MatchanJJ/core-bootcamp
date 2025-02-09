@@ -7,15 +7,27 @@
 const hre = require("hardhat");
 
 async function main() {
-  const contract = await hre.ethers.deployContract("MyNFT");
+  const [deployer] = await hre.ethers.getSigners();
+  const maxSupply = 10000; 
+  const erc20TokenAddress = "0x3E0A1b2bD478F7C5711f0f157070B0e3E2116ACb"; 
+  const mintPrice = hre.ethers.parseUnits("0.000000000000000001", 18); // 1 wei
+  const MyNFT = await hre.ethers.getContractFactory("MyNFT");
+  const contract = await MyNFT.deploy(maxSupply, erc20TokenAddress, mintPrice);
 
   await contract.waitForDeployment();
+  console.log(`MyNFT deployed to: ${contract.address}`);
 
-  console.log(`Deployed to ${contract.target}`);
+  // Approve the allowance
+  const ERC20 = await hre.ethers.getContractAt("IERC20", erc20TokenAddress);
+  const approveTx = await ERC20.approve(contract.target, mintPrice);
+  await approveTx.wait();
+  console.log(`Approved ${mintPrice.toString()} tokens for MyNFT contract`);
+
+
+
+  console.log(`MyNFT deployed to: ${contract.target}`);
 }
 
-// We recommend this pattern to be able to use async/await everywhere
-// and properly handle errors.
 main().catch((error) => {
   console.error(error);
   process.exitCode = 1;
