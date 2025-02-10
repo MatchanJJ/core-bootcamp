@@ -13,13 +13,14 @@ async function main() {
   const mintPrice = hre.ethers.parseUnits("0.000000000000000001", 18); 
   const MyNFT = await hre.ethers.getContractFactory("MyNFT");
   const contract = await MyNFT.deploy(maxSupply, erc20TokenAddress, mintPrice);
+  const totalSupply = hre.ethers.parseUnits("1234000000000000000000", 18);
 
   await contract.waitForDeployment();
   console.log(`MyNFT deployed to: ${contract.target}`);
 
   // Approve the allowance
   const ERC20 = await hre.ethers.getContractAt("IERC20", erc20TokenAddress);
-  const approveTx = await ERC20.approve(contract.target, mintPrice);
+  const approveTx = await ERC20.approve(contract.target, totalSupply);
   await approveTx.wait();
   console.log(`Approved ${mintPrice.toString()} tokens for MyNFT contract`);
 
